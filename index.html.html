@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teste de Integridade · PathMind</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --purple: #5B2D8E;
+    --purple-light: #f3eefa;
+    --purple-mid: #4B47C0;
+    --teal: #3ABFB1;
+    --gold: #C8A84B;
+    --bg: #faf9f7;
+    --surface: #ffffff;
+    --border: rgba(0,0,0,0.08);
+    --text: #1a1a1a;
+    --text-muted: #6b6b6b;
+    --text-hint: #a0a0a0;
+    --green-bg: #e8f5e9; --green-text: #1b5e20;
+    --yellow-bg: #fffde7; --yellow-text: #7a5f00;
+    --red-bg: #fdecea; --red-text: #7f1d1d;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 560px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 2.5rem;
+  }
+
+  .brand-mark {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--purple);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .brand-mark svg { width: 16px; height: 16px; }
+
+  .brand-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--purple);
+    letter-spacing: 0.02em;
+  }
+
+  .brand-sep {
+    width: 1px;
+    height: 16px;
+    background: var(--border);
+    margin: 0 4px;
+  }
+
+  .brand-client {
+    font-size: 13px;
+    color: var(--text-hint);
+    letter-spacing: 0.03em;
+  }
+
+  /* INTRO */
+  .intro { animation: fadeUp 0.5s ease both; }
+
+  .intro-eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 1rem;
+  }
+
+  .intro-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px;
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--text);
+    margin-bottom: 1.25rem;
+  }
+
+  .intro-title em {
+    font-style: italic;
+    color: var(--purple);
+  }
+
+  .intro-body {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.75;
+    margin-bottom: 2rem;
+  }
+
+  .intro-meta {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .meta-label { font-size: 11px; color: var(--text-hint); text-transform: uppercase; letter-spacing: 0.08em; }
+  .meta-value { font-size: 14px; font-weight: 500; color: var(--text); }
+
+  .btn-start {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--purple);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 0.9rem 1.8rem;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .btn-start:hover { background: var(--purple-mid); transform: translateY(-1px); }
+  .btn-start:active { transform: translateY(0); }
+
+  .btn-start svg { width: 18px; height: 18px; }
+
+  .divider-line {
+    height: 1px;
+    background: var(--border);
+    margin: 2.5rem 0;
+  }
+
+  .intro-disclaimer {
+    font-size: 12px;
+    color: var(--text-hint);
+    line-height: 1.6;
+  }
+
+  /* QUIZ */
+  .quiz { animation: fadeUp 0.4s ease both; }
+
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .progress-label { font-size: 13px; color: var(--text-hint); }
+  .progress-count { font-size: 13px; font-weight: 500; color: var(--purple); }
+
+  .progress-track {
+    height: 3px;
+    background: var(--border);
+    border-radius: 99px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--purple), var(--teal));
+    border-radius: 99px;
+    transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  .context-box {
+    background: var(--purple-light);
+    border-left: 3px solid var(--purple);
+    border-radius: 0 10px 10px 0;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    font-size: 14px;
+    color: #3C3489;
+    line-height: 1.7;
+  }
+
+  .question-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 1.25rem;
+    line-height: 1.4;
+  }
+
+  .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 2rem; }
+
+  .option {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.1rem;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    cursor: pointer;
+    text-align: left;
+    line-height: 1.6;
+    transition: all 0.18s;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .option-letter {
+    min-width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-hint);
+    flex-shrink: 0;
+    margin-top: 1px;
+    transition: all 0.18s;
+  }
+
+  .option:hover { border-color: var(--purple); background: var(--purple-light); }
+  .option:hover .option-letter { border-color: var(--purple); color: var(--purple); }
+
+  .option.selected { border-color: var(--purple); background: var(--purple-light); }
+  .option.selected .option-letter {
+    background: var(--purple);
+    border-color: var(--purple);
+    color: #fff;
+  }
+
+  .nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .btn-back {
+    background: none;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 0.65rem 1.1rem;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .btn-back:hover { border-color: #999; color: var(--text); }
+  .btn-back:disabled { opacity: 0.3; cursor: default; }
+
+  .btn-next {
+    background: var(--purple);
+    border: none;
+    border-radius: 10px;
+    padding: 0.7rem 1.4rem;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .btn-next:hover { background: var(--purple-mid); }
+  .btn-next:disabled { opacity: 0.35; cursor: default; }
+
+  /* RESULT */
+  .result { animation: fadeUp 0.5s ease both; }
+
+  .semaforo-wrap {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 1.5rem 0 2rem;
+  }
+
+  .semaforo-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    opacity: 0.2;
+    transition: all 0.4s;
+  }
+
+  .semaforo-item.active { opacity: 1; }
+
+  .semaforo-dot {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    transition: transform 0.4s;
+  }
+
+  .semaforo-item.active .semaforo-dot { transform: scale(1.2); }
+
+  .dot-verde { background: #4caf50; }
+  .dot-amarelo { background: #ffc107; }
+  .dot-vermelho { background: #ef5350; }
+
+  .semaforo-label {
+    font-size: 11px;
+    color: var(--text-hint);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  .result-zone-tag {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 14px;
+    border-radius: 99px;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.04em;
+  }
+
+  .tag-verde { background: var(--green-bg); color: var(--green-text); }
+  .tag-amarelo { background: var(--yellow-bg); color: var(--yellow-text); }
+  .tag-vermelho { background: var(--red-bg); color: var(--red-text); }
+
+  .result-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 1rem;
+    line-height: 1.3;
+  }
+
+  .result-body {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.75;
+    margin-bottom: 2rem;
+  }
+
+  .reflexao-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .reflexao-title {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-hint);
+    margin-bottom: 1rem;
+  }
+
+  .reflexao-item {
+    display: flex;
+    gap: 10px;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.65;
+    align-items: flex-start;
+  }
+
+  .reflexao-item:last-child { border-bottom: none; }
+
+  .reflexao-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--purple);
+    margin-top: 8px;
+    flex-shrink: 0;
+  }
+
+  .result-footer {
+    font-size: 13px;
+    color: var(--text-hint);
+    text-align: center;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+
+  .btn-refazer {
+    display: block;
+    width: 100%;
+    background: none;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 0.75rem;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .btn-refazer:hover { border-color: #999; color: var(--text); }
+
+  .pathmind-footer {
+    text-align: center;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .pathfooter-text {
+    font-size: 12px;
+    color: var(--text-hint);
+  }
+
+  .pathfooter-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    color: var(--purple);
+    font-weight: 500;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 480px) {
+    .intro-title { font-size: 30px; }
+    .question-text { font-size: 20px; }
+    .result-title { font-size: 26px; }
+    body { padding: 1.5rem 1rem 3rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="brand">
+    <div class="brand-mark">
+      <svg viewBox="0 0 16 16" fill="none">
+        <circle cx="8" cy="8" r="6" stroke="#fff" stroke-width="1.5"/>
+        <path d="M5 8.5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <span class="brand-name">PathMind</span>
+    <div class="brand-sep"></div>
+    <span class="brand-client">Mota-Engil</span>
+  </div>
+
+  <div id="app"></div>
+
+  <div class="pathmind-footer">
+    <p class="pathfooter-text">Uma experiência <span class="pathfooter-brand">PathMind</span> · Saúde Mental Corporativa</p>
+  </div>
+
+</div>
+
+<script>
+const questions = [
+  {
+    context: "Você está em uma reunião de obra. O engenheiro responsável aprova um procedimento que você acredita ter uma falha de segurança. Todos os demais concordam em silêncio.",
+    question: "O que você faz?",
+    options: [
+      { text: "Levanto a questão na hora, mesmo sem ter certeza absoluta.", score: 3 },
+      { text: "Espero o fim da reunião e comento com um colega de confiança.", score: 2 },
+      { text: "Anoto internamente para verificar depois, mas não falo nada agora.", score: 1 },
+      { text: "Confio no julgamento do engenheiro responsável e sigo em frente.", score: 0 }
+    ]
+  },
+  {
+    context: "Um colega próximo cometeu um erro que causou atraso no projeto. Você sabe disso. Seu gestor pergunta diretamente o que aconteceu.",
+    question: "Como você responde?",
+    options: [
+      { text: "Explico o que sei com clareza, sem exagerar nem omitir.", score: 3 },
+      { text: "Dou uma resposta vaga — não quero prejudicar meu colega.", score: 1 },
+      { text: "Falo o mínimo possível e redireciono a conversa.", score: 1 },
+      { text: "Conto tudo, mas incluo detalhes que podem proteger minha posição.", score: 2 }
+    ]
+  },
+  {
+    context: "Você descobre que uma decisão tomada pelo seu time — da qual você participou — teve um impacto negativo que poderia ter sido evitado.",
+    question: "Qual é sua postura?",
+    options: [
+      { text: "Assumo minha parte da responsabilidade e proponho ações de melhoria.", score: 3 },
+      { text: "Reconheço o erro internamente — mas não vejo necessidade de trazer isso à tona.", score: 1 },
+      { text: "Busco entender o que aconteceu antes de tomar qualquer posição.", score: 2 },
+      { text: "Deixo que os demais assumam a frente. Eu participei, mas não fui o principal responsável.", score: 0 }
+    ]
+  },
+  {
+    context: "Você percebe que um fornecedor parceiro está entregando materiais abaixo do padrão contratado. A obra está no prazo e ninguém mais parece ter notado.",
+    question: "O que você faz?",
+    options: [
+      { text: "Registro e reporto formalmente, mesmo sabendo que pode gerar atrito.", score: 3 },
+      { text: "Menciono para meu gestor de forma informal, para que ele decida.", score: 2 },
+      { text: "Monitoro a situação mais de perto antes de agir.", score: 1 },
+      { text: "A obra está no prazo — prefiro não criar problema onde aparentemente não há um.", score: 0 }
+    ]
+  },
+  {
+    context: "Seu gestor lhe pede para assinar um documento com informações que você sabe que estão incompletas. Ele diz que 'todo mundo faz assim' e que é apenas uma formalidade.",
+    question: "Como você age?",
+    options: [
+      { text: "Me recuso a assinar e explico minha posição com clareza.", score: 3 },
+      { text: "Peço para verificar as informações antes de assinar qualquer coisa.", score: 3 },
+      { text: "Assino, mas registro minha ressalva por escrito em outro canal.", score: 2 },
+      { text: "Assino — confio que meu gestor sabe o que está fazendo.", score: 0 }
+    ]
+  },
+  {
+    context: "Você está sob pressão para entregar um resultado. Percebe que, para cumprir o prazo, seria necessário 'arredondar' alguns dados no relatório.",
+    question: "O que você decide?",
+    options: [
+      { text: "Não altero os dados. Comunico o problema e proponho ajuste no prazo ou escopo.", score: 3 },
+      { text: "Ajusto os dados de forma que 'não seja uma mentira', mas que facilite a aprovação.", score: 1 },
+      { text: "Entrego no prazo e corrijo os dados na próxima atualização.", score: 0 },
+      { text: "Peço orientação ao meu gestor antes de qualquer decisão.", score: 2 }
+    ]
+  }
+];
+
+const zones = {
+  verde: {
+    label: 'Zona Verde',
+    tag: 'tag-verde',
+    title: 'Integridade ativa',
+    body: 'Você demonstra consistência entre valores e ações, mesmo sob pressão. Tende a falar quando necessário, assumir responsabilidade e agir com transparência — comportamentos que sustentam times de alta confiança.',
+    reflexoes: [
+      'Continue sendo uma referência de coerência para quem está ao seu redor.',
+      'Pense em como você pode criar espaço para que outros também falem.',
+      'Integridade ativa não é ausência de dúvida — é a escolha de agir mesmo com ela.'
+    ]
+  },
+  amarelo: {
+    label: 'Zona Amarela',
+    tag: 'tag-amarelo',
+    title: 'Integridade em construção',
+    body: 'Você reconhece os valores, mas em alguns contextos a pressão ou o risco relacional pesa na decisão. Isso é humano — e é exatamente aqui que o trabalho de desenvolvimento começa.',
+    reflexoes: [
+      'Em quais situações você tende a recuar? O que te impede de falar?',
+      'Pense na diferença entre cautela genuína e evitar desconforto.',
+      'Integridade não exige heroísmo — exige pequenas escolhas consistentes.'
+    ]
+  },
+  vermelho: {
+    label: 'Zona Vermelha',
+    tag: 'tag-vermelho',
+    title: 'Integridade sob pressão',
+    body: 'Nas situações apresentadas, você tendeu a priorizar conforto, prazo ou hierarquia acima da transparência. Isso não é um julgamento — é um ponto de partida honesto para reflexão.',
+    reflexoes: [
+      'O que aconteceria se você falasse? O medo é real ou é uma suposição?',
+      'Qual foi o custo, para você ou para outros, de escolhas semelhantes no passado?',
+      'Integridade começa com uma pergunta honesta a si mesmo.'
+    ]
+  }
+};
+
+let screen = 'intro';
+let current = 0;
+let answers = Array(questions.length).fill(null);
+
+function getZone(total) {
+  const pct = total / (questions.length * 3);
+  if (pct >= 0.75) return 'verde';
+  if (pct >= 0.45) return 'amarelo';
+  return 'vermelho';
+}
+
+function letters(i) { return ['A','B','C','D'][i]; }
+
+function renderIntro() {
+  return `
+    <div class="intro">
+      <p class="intro-eyebrow">Palestra · Integridade, Coragem e Segurança Psicológica</p>
+      <h1 class="intro-title">Onde está a sua <em>integridade</em>?</h1>
+      <p class="intro-body">Este não é um teste de certo ou errado. É um convite para reflexão — sobre como você age quando a pressão aparece, quando ninguém está olhando, ou quando o caminho mais fácil está à sua frente.</p>
+      <div class="intro-meta">
+        <div class="meta-item">
+          <span class="meta-label">Situações</span>
+          <span class="meta-value">6 dilemas</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Tempo</span>
+          <span class="meta-value">~3 minutos</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Resultado</span>
+          <span class="meta-value">Imediato</span>
+        </div>
+      </div>
+      <button class="btn-start" onclick="start()">
+        Começar
+        <svg viewBox="0 0 18 18" fill="none"><path d="M7 5l4 4-4 4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="divider-line"></div>
+      <p class="intro-disclaimer">Suas respostas são anônimas e não são registradas. Este material foi desenvolvido pela PathMind como parte da jornada de desenvolvimento de times.</p>
+    </div>`;
+}
+
+function renderQuiz() {
+  const q = questions[current];
+  const pct = Math.round(((current) / questions.length) * 100);
+  return `
+    <div class="quiz">
+      <div class="progress-header">
+        <span class="progress-label">Situação ${current + 1} de ${questions.length}</span>
+        <span class="progress-count">${pct}% concluído</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+      <div class="context-box">${q.context}</div>
+      <p class="question-text">${q.question}</p>
+      <div class="options">
+        ${q.options.map((o, i) => `
+          <button class="option${answers[current] === i ? ' selected' : ''}" onclick="select(${i})">
+            <span class="option-letter">${letters(i)}</span>
+            <span>${o.text}</span>
+          </button>`).join('')}
+      </div>
+      <div class="nav-row">
+        <button class="btn-back" onclick="prev()" ${current === 0 ? 'disabled' : ''}>← Anterior</button>
+        ${current < questions.length - 1
+          ? `<button class="btn-next" onclick="next()" ${answers[current] === null ? 'disabled' : ''}>Próxima →</button>`
+          : `<button class="btn-next" onclick="showResult()" ${answers[current] === null ? 'disabled' : ''}>Ver resultado →</button>`}
+      </div>
+    </div>`;
+}
+
+function renderResult() {
+  const total = answers.reduce((s, a, i) => s + (a !== null ? questions[i].options[a].score : 0), 0);
+  const zone = getZone(total);
+  const z = zones[zone];
+  return `
+    <div class="result">
+      <div class="semaforo-wrap">
+        <div class="semaforo-item${zone === 'verde' ? ' active' : ''}">
+          <div class="semaforo-dot dot-verde"></div>
+          <span class="semaforo-label">Verde</span>
+        </div>
+        <div class="semaforo-item${zone === 'amarelo' ? ' active' : ''}">
+          <div class="semaforo-dot dot-amarelo"></div>
+          <span class="semaforo-label">Amarelo</span>
+        </div>
+        <div class="semaforo-item${zone === 'vermelho' ? ' active' : ''}">
+          <div class="semaforo-dot dot-vermelho"></div>
+          <span class="semaforo-label">Vermelho</span>
+        </div>
+      </div>
+      <span class="result-zone-tag ${z.tag}">${z.label}</span>
+      <h2 class="result-title">${z.title}</h2>
+      <p class="result-body">${z.body}</p>
+      <div class="reflexao-box">
+        <p class="reflexao-title">Para levar para a palestra de hoje</p>
+        ${z.reflexoes.map(r => `
+          <div class="reflexao-item">
+            <div class="reflexao-dot"></div>
+            <span>${r}</span>
+          </div>`).join('')}
+      </div>
+      <p class="result-footer">Guarde uma dessas perguntas com você.<br>Ela pode aparecer durante a conversa de hoje.</p>
+      <button class="btn-refazer" onclick="restart()">Refazer o teste</button>
+    </div>`;
+}
+
+function render() {
+  const app = document.getElementById('app');
+  if (screen === 'intro') app.innerHTML = renderIntro();
+  else if (screen === 'quiz') app.innerHTML = renderQuiz();
+  else app.innerHTML = renderResult();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function start() { screen = 'quiz'; render(); }
+function select(i) { answers[current] = i; render(); }
+function next() { if (answers[current] !== null && current < questions.length - 1) { current++; render(); } }
+function prev() { if (current > 0) { current--; render(); } }
+function showResult() { screen = 'result'; render(); }
+function restart() { current = 0; answers = Array(questions.length).fill(null); screen = 'intro'; render(); }
+
+render();
+</script>
+</body>
+</html>
